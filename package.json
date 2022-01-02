@@ -1,0 +1,25 @@
+{
+  "name": "employee-tracker-v2",
+  "version": "1.0.0",
+  "description": "# npms used https://www.npmjs.com/package/mysql2 https://www.npmjs.com/package/inquirer https://www.npmjs.com/package/console.table",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slumsd01/employee-tracker-v2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slumsd01/employee-tracker-v2/issues"
+  },
+  "homepage": "https://github.com/slumsd01/employee-tracker-v2#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
+  }
+}
