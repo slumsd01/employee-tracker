@@ -20,14 +20,22 @@ VALUES
     ('Lawyer', 19000.00, 3);
 
 
-INSERT INTO employee 
-    (first_name, last_name, role_id)
+INSERT INTO manager
+    (id, manager)
 VALUES
-    ('John', 'Doe', 1),
-    ('Mike', 'Chan', 2),
-    ('Ashley', 'Rodriquez', 3),
-    ('Kevin', 'Tupik', 4),
-    ('Kunal', 'Singh', 5),
-    ('Malia', 'Brown', 6),
-    ('Sarah', 'Lourd', 7),
-    ('Tom', 'Allen', 8);
+    (1, 'John Doe'),
+    (3, 'Ashley Rodriquez'),
+    (5, 'Kunal Singh'),
+    (7, 'Sarah Lourd');
+
+INSERT INTO employee 
+    (first_name, last_name, role_id, manager_id)
+VALUES
+    ('John', 'Doe', 1, NULL),
+    ('Mike', 'Chan', 2, 1),
+    ('Ashley', 'Rodriquez', 3, NULL),
+    ('Kevin', 'Tupik', 4, 3),
+    ('Kunal', 'Singh', 5, NULL),
+    ('Malia', 'Brown', 6, 5),
+    ('Sarah', 'Lourd', 7, NULL),
+    ('Tom', 'Allen', 8, 7);

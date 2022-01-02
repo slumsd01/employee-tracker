@@ -78,10 +78,11 @@ function viewRoles() {
 function viewEmployees() {
     connection.promise().query
         (
-            `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department, role.salary FROM employee
+            `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department, role.salary, manager.manager FROM employee
             JOIN role ON employee.role_id = role.id
             JOIN department ON role.department_id = department.id
-            ORDER BY employee.id;`
+            LEFT JOIN manager ON manager_id = manager.id
+            ORDER BY employee.id`
         )
     .then( ([results]) => {
         console.table(results);
@@ -164,14 +165,38 @@ function addEmployee() {
                     console.log('What role does this employee have? (Enter the id number from the table above.)')
                 })
             }
+        },
+        {
+            name: 'manager',
+            type:'input',
+            message: function () {
+                connection.promise().query(`SELECT * FROM manager`)
+                .then( ([results]) => {
+                    console.log('\n')
+                    console.table(results);
+                    console.log('What manager does this employee report to? (Enter the id number from the table above; enter "0" for none.)')
+                })
+            }
         }
+
+
     ]).then( (newEmployee) => {
-        let params = [ newEmployee.firstName, newEmployee.lastName, newEmployee.role ]
-        connection.promise().query(`INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)`, params)
-        .then( ([results]) => {
-            console.log(`New role added!`);
-            mainMenu()
-        })
+        if (newEmployee.manager == 0) {
+            let params = [ newEmployee.firstName, newEmployee.lastName, newEmployee.role ]
+            connection.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, NULL)`, params)
+            .then( ([results]) => {
+                console.log(`New role added!`);
+                mainMenu()
+            })
+        } else if (newEmployee.manager !==0 ) {
+            let params = [ newEmployee.firstName, newEmployee.lastName, newEmployee.role, newEmployee.manager ]
+            connection.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, params)
+            .then( ([results]) => {
+                console.log(`New role added!`);
+                mainMenu()
+            })
+        }
+        
     })
 }
 
