@@ -11,18 +11,17 @@ const connection = mysql.createConnection({
 })
 
 function mainMenu() {
-    inquirer
-    .prompt({
+    inquirer.prompt({
         name: 'main',
         type: 'list',
         message: 'What would you like to do?',
         choices: [
             'View all departments',
             'View all roles',
-            'View all employees'
+            'View all employees',
+            'Add a department'
         ]
-    })
-    .then((selection) => {
+    }).then( (selection) => {
         switch (selection.main) {
             case 'View all departments':
                 viewDepartments()
@@ -33,6 +32,13 @@ function mainMenu() {
             case 'View all employees':
                 viewEmployees()
                 break;
+            case 'Add a department':
+                addDepartment()
+                break;
+            case 'Add a role':
+                addDepartment()
+                break;
+    
         }
     })
 }
@@ -69,6 +75,23 @@ function viewEmployees() {
     .then( ([results]) => {
         console.table(results);
         mainMenu()
+    })
+}
+
+function addDepartment() {
+    console.log('Add department')
+    inquirer.prompt({
+        name: 'newDepartment',
+        type: 'input',
+        message: 'Enter the name of the new department.'
+    }).then( (input) => {
+        console.log(input)
+        let params = [ input.newDepartment ]
+        connection.promise().query(`INSERT INTO department (department) VALUES (?)`, params)
+            .then( ([results]) => {
+            console.table(results);
+            mainMenu()
+        })
     })
 }
 
