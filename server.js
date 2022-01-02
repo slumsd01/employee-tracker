@@ -19,7 +19,8 @@ function mainMenu() {
             'View all departments',
             'View all roles',
             'View all employees',
-            'Add a department'
+            'Add a department',
+            'Add a role'
         ]
     }).then( (selection) => {
         switch (selection.main) {
@@ -36,9 +37,8 @@ function mainMenu() {
                 addDepartment()
                 break;
             case 'Add a role':
-                addDepartment()
+                addRole()
                 break;
-    
         }
     })
 }
@@ -79,20 +79,51 @@ function viewEmployees() {
 }
 
 function addDepartment() {
-    console.log('Add department')
     inquirer.prompt({
         name: 'newDepartment',
         type: 'input',
         message: 'Enter the name of the new department.'
     }).then( (input) => {
-        console.log(input)
         let params = [ input.newDepartment ]
         connection.promise().query(`INSERT INTO department (department) VALUES (?)`, params)
             .then( ([results]) => {
-            console.table(results);
+            console.log(`New department added!`);
             mainMenu()
         })
     })
+}
+
+function addRole() {
+    // show departments to choose from
+    connection.promise().query(`SELECT * FROM department`)
+    .then( ([results]) => {
+        console.table(results);
+        inquirer.prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'Enter the title of the new role.'
+            }, 
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'Enter the salary of the new role.'
+            }, 
+            {
+                name: 'department',
+                type: 'input',
+                message: 'Enter the ID number for the department this role is associated with. (Refer to the table above.)'
+            }
+        ]).then( (newRole) => {
+            let params = [ newRole.title, newRole.salary, newRole.department ]
+            connection.promise().query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, params)
+            .then( ([results]) => {
+                console.log(`New role added!`);
+                mainMenu()
+            })
+        })
+    })
+    
 }
 
 mainMenu()

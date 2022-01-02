@@ -1,6 +1,10 @@
 # employee-tracker
 
-# npms used
+## instruction notes
+Update password for MYSQL
+
+
+## npms used
 https://www.npmjs.com/package/mysql2
 https://www.npmjs.com/package/inquirer
 https://www.npmjs.com/package/console.table
